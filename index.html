@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#171919">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Blitzrechner">
+  <meta name="description" content="Blitzleistungs-Rechner für den Godox iM30 und analoge Fotografie.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <title>Blitzrechner · Godox iM30</title>
+  <style>
+    :root{color-scheme:dark;--bg:#141615;--panel:#222625;--panel2:#2a2d2b;--line:#404640;--ink:#f6f2e9;--sub:#b4b6ab;--accent:#edbc66;--shadow:rgba(0,0,0,.16)}
+    *{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+    main{max-width:510px;margin:auto;padding:max(32px,env(safe-area-inset-top)) 20px max(40px,env(safe-area-inset-bottom))}
+    .topline{display:flex;align-items:center;gap:10px;color:var(--accent);letter-spacing:.17em;text-transform:uppercase;font-size:11px;font-weight:760}
+    .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(237,188,102,.1)}
+    h1{font-size:clamp(31px,8vw,42px);line-height:1.07;letter-spacing:-.045em;margin:16px 0 8px;font-weight:760}header p{color:var(--sub);font-size:15px;line-height:1.48;margin:0 0 26px}
+    .fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:flex;flex-direction:column;gap:9px}
+    label,.slidertop span:first-child,.rowlabel{font-size:13px;font-weight:650;color:#d3d4cc}
+    select{width:100%;border:1px solid var(--line);border-radius:13px;background:var(--panel);color:var(--ink);height:53px;padding:0 12px;font-size:17px;outline:none}
+    select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+    .surface{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:19px;margin-top:14px}
+    .slidertop{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}.bigdist{font-size:23px;font-weight:760;letter-spacing:-.03em}
+    input[type=range]{display:block;width:100%;margin:0;accent-color:var(--accent);height:30px;cursor:pointer}
+    .rangetips{display:flex;justify-content:space-between;color:var(--sub);font-size:11px;margin-top:4px}
+    .compgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:14px}
+    .compgrid button{appearance:none;border-radius:10px;min-height:42px;background:var(--panel2);border:1px solid var(--line);color:var(--ink);font-size:13px;font-weight:650;cursor:pointer}
+    .compgrid button[aria-pressed=true]{color:#181b17;background:var(--accent);border-color:var(--accent)}
+    .calculated{margin:17px 0 14px;background:#edbc66;color:#171914;border-radius:22px;padding:23px 22px 21px;box-shadow:0 12px 30px var(--shadow)}
+    .overline{font-size:11px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}.answer{font-size:clamp(66px,17vw,89px);font-weight:800;letter-spacing:-.08em;line-height:1.05;margin:9px 0}
+    .subtitle{font-size:14px;font-weight:670}.status{margin:14px 0 0;padding:11px 12px;border-radius:11px;background:rgba(255,255,255,.25);font-size:13px;line-height:1.4}
+    .note{color:var(--sub);font-size:13px;line-height:1.55;margin:14px 0 0}.line{height:1px;background:var(--line);margin:22px 0 18px}
+    .formula{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;color:var(--sub);font-size:13px;line-height:1.45}.formula strong{color:var(--ink);font-weight:650}
+    footer{color:#9ba095;font-size:11px;line-height:1.5;margin-top:24px}
+    @media(max-width:360px){main{padding-left:14px;padding-right:14px}.surface{padding:15px}.calculated{padding:18px}}
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="topline"><span class="dot" aria-hidden="true"></span> ANALOG · TOOL 01</div>
+    <h1>Blitzrechner<span style="color:var(--accent)">.</span></h1>
+    <p>Godox iM30 × Canon New F-1<br>Einfach einstellen statt raten.</p>
+  </header>
+
+  <section aria-label="Belichtungseinstellungen">
+    <div class="fields">
+      <div class="field"><label for="iso">Filmempfindlichkeit</label><select id="iso"><option>50</option><option>100</option><option>200</option><option selected>400</option><option>800</option><option>1600</option><option>3200</option></select></div>
+      <div class="field"><label for="aperture">Blende</label><select id="aperture"><option value="1.4">f/1.4</option><option value="2">f/2</option><option value="2.8">f/2.8</option><option value="4">f/4</option><option value="5.6" selected>f/5.6</option><option value="8">f/8</option><option value="11">f/11</option><option value="16">f/16</option><option value="22">f/22</option></select></div>
+    </div>
+    <div class="surface">
+      <div class="slidertop"><span>Abstand zum Motiv</span><span class="bigdist" id="distanceValue">2,0 m</span></div>
+      <input id="distance" type="range" min="0.5" max="8" step="0.5" value="2" aria-label="Motivabstand in Metern"/>
+      <div class="rangetips"><span>0,5 m</span><span>8 m</span></div>
+    </div>
+    <div class="surface">
+      <div class="rowlabel">Blitzwirkung</div>
+      <div class="compgrid" role="group" aria-label="Blitzkorrektur">
+        <button type="button" data-ev="-2" aria-pressed="false">–2 EV</button>
+        <button type="button" data-ev="-1" aria-pressed="false">–1 EV</button>
+        <button type="button" data-ev="0" aria-pressed="true">Normal</button>
+        <button type="button" data-ev="1" aria-pressed="false">+1 EV</button>
+      </div>
+      <div class="note" id="evHelp">Normal = Blitz als Hauptlicht. Bei Tageslicht zum Aufhellen oft –1 bis –2 EV wählen.</div>
+    </div>
+  </section>
+
+  <section class="calculated" aria-live="polite" aria-label="Ergebnis">
+    <div class="overline">GODOX iM30 · LEISTUNG</div>
+    <div class="answer" id="power">1/8</div>
+    <div class="subtitle" id="summary">ISO 400 · f/5.6 · 2,0 m</div>
+    <p class="status" id="status">Guter Ausgangspunkt für direkten Blitz.</p>
+  </section>
+
+  <div class="line" aria-hidden="true"></div>
+  <section aria-label="Hinweise">
+    <div class="formula"><span>Canon New F-1</span><strong>Verschlusszeit: 1/90 s</strong><span>Berechnung</span><strong>Leitzahl 15 bei ISO 100</strong><span>Blitzrichtung</span><strong>Direkt auf das Motiv</strong></div>
+    <p class="note">Schätzwerte für direkte Blitzaufnahmen. Reflektierende Wände, Gegenlicht, Diffusoren und vorhandenes Licht verändern das Ergebnis. Bei sehr hellem Umgebungslicht erst die Tageslichtbelichtung berücksichtigen.</p>
+  </section>
+  <footer>Fernandez Studio · Privater Blitz-Spickzettel. Kein Belichtungsmesser. Offline nutzbar, wenn als Web-App installiert und einmal geladen.</footer>
+</main>
+<script>
+(function(){
+  'use strict';
+  const iso=document.querySelector('#iso'), ap=document.querySelector('#aperture'), dist=document.querySelector('#distance');
+  const distValue=document.querySelector('#distanceValue'), power=document.querySelector('#power'), summary=document.querySelector('#summary'), status=document.querySelector('#status');
+  const buttons=[...document.querySelectorAll('[data-ev]')];
+  const labels=['1/64','1/32','1/16','1/8','1/4','1/2','1/1'];
+  const fractions=[1/64,1/32,1/16,1/8,1/4,1/2,1];
+  let ev=0;
+  const fmt=v=>v.toFixed(1).replace('.',',');
+  const getSaved=()=>{try{return JSON.parse(localStorage.getItem('iM30-settings')||'null')}catch{return null}};
+  const save=()=>{try{localStorage.setItem('iM30-settings',JSON.stringify({iso:iso.value,ap:ap.value,distance:dist.value,ev}))}catch{}};
+  const prev=getSaved();
+  if(prev){if([...iso.options].some(o=>o.value===prev.iso))iso.value=prev.iso;if([...ap.options].some(o=>o.value===prev.ap))ap.value=prev.ap;if(Number(prev.distance)>=.5&&Number(prev.distance)<=8)dist.value=prev.distance;if([-2,-1,0,1].includes(prev.ev))ev=prev.ev}
+  function calculate(){
+    const ISO=Number(iso.value), aperture=Number(ap.value), d=Number(dist.value);
+    // GN = aperture * distance at full power. Exposure proportional to power.
+    const required=Math.pow(aperture*d/(15*Math.sqrt(ISO/100)),2)*Math.pow(2,ev);
+    let closestIndex=0, closestDiff=Infinity;
+    for(let i=0;i<fractions.length;i++){
+      const diff=Math.abs(Math.log2(fractions[i]/required));
+      if(diff<closestDiff){closestDiff=diff;closestIndex=i}
+    }
+    const selected=fractions[closestIndex], deviation=Math.log2(selected/required);
+    distValue.textContent=fmt(d)+' m';power.textContent=labels[closestIndex];
+    summary.textContent='ISO '+ISO+' · f/'+ap.value+' · '+fmt(d)+' m';
+    buttons.forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.ev)===ev)));
+    if(required<fractions[0]){
+      status.textContent='Achtung: Selbst 1/64 ist hier zu stark. Blende weiter schliessen oder Abstand vergrössern.';
+    }else if(required>1){
+      status.textContent='Achtung: Auch volle Leistung reicht vermutlich nicht. Blende öffnen oder näher ans Motiv.';
+    }else if(Math.abs(deviation)>.35){
+      status.textContent=(deviation>0?'Etwas heller':'Etwas dunkler')+' als berechnet (rund '+fmt(Math.abs(deviation))+' Lichtwertstufen).';
+    }else{
+      status.textContent='Guter Ausgangspunkt für direkten Blitz.';
+    }
+    save();
+  }
+  [iso,ap,dist].forEach(el=>el.addEventListener('input',calculate));
+  buttons.forEach(el=>el.addEventListener('click',()=>{ev=Number(el.dataset.ev);calculate()}));
+  calculate();
+  if('serviceWorker' in navigator && location.protocol==='https:') navigator.serviceWorker.register('./sw.js').catch(()=>{});
+})();
+</script>
+</body>
+</html>

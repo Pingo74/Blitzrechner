@@ -1,0 +1,15 @@
+{
+  "name": "Blitzrechner · Godox iM30",
+  "short_name": "Blitzrechner",
+  "description": "Blitzleistung für analoge Fotografie berechnen",
+  "lang": "de-CH",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#141615",
+  "theme_color": "#171919",
+  "icons": [
+    {"src":"icon-180.png","sizes":"180x180","type":"image/png","purpose":"any"},
+    {"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"}
+  ]
+}
