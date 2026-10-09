@@ -26,6 +26,18 @@
     .slidertop{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}.bigdist{font-size:23px;font-weight:760;letter-spacing:-.03em}
     input[type=range]{display:block;width:100%;margin:0;accent-color:var(--accent);height:30px;cursor:pointer}
     .rangetips{display:flex;justify-content:space-between;color:var(--sub);font-size:11px;margin-top:4px}
+    .scene-row{margin-top:3px}
+    .scene-desc{color:var(--sub);font-size:13px;line-height:1.5;margin:12px 0 0}
+    .ambient{padding:19px;border:1px solid var(--line);border-radius:18px;background:var(--panel);margin-top:14px}
+    .ambient.warning{border-color:#c49347;background:#332b20}
+    .ambient.good{border-color:#52654d}
+    .ambient-head{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);font-weight:800;margin-bottom:11px}
+    .ambient-title{font-size:18px;font-weight:760;line-height:1.35;margin:0 0 8px}
+    .ambient-copy{color:var(--sub);font-size:13px;line-height:1.55;margin:0}
+    .ambient-field{margin-top:17px;border-top:1px solid var(--line);padding-top:16px}
+    .ambient-field label{display:block;margin-bottom:9px}
+    .ambient-field select{font-size:15px}
+    .smallnote{margin:10px 0 0;color:var(--sub);font-size:12px;line-height:1.45}
     .compgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:14px}
     .compgrid button{appearance:none;border-radius:10px;min-height:42px;background:var(--panel2);border:1px solid var(--line);color:var(--ink);font-size:13px;font-weight:650;cursor:pointer}
     .compgrid button[aria-pressed=true]{color:#181b17;background:var(--accent);border-color:var(--accent)}
@@ -57,7 +69,18 @@
       <div class="rangetips"><span>0,5 m</span><span>8 m</span></div>
     </div>
     <div class="surface">
-      <div class="rowlabel">Blitzwirkung</div>
+      <label for="scene" class="rowlabel" style="display:block;margin-bottom:11px">Situation</label>
+      <select id="scene" aria-describedby="sceneHelp">
+        <option value="night">🌙 Nacht / dunkel</option>
+        <option value="indoor">🏠 Innenraum</option>
+        <option value="cloudy">☁️ Bewölkt</option>
+        <option value="sunny">☀️ Sonnig</option>
+        <option value="backlit">🌅 Gegenlicht</option>
+      </select>
+      <p id="sceneHelp" class="scene-desc">Blitz als Hauptlicht. Hintergrund kann dunkel werden.</p>
+    </div>
+    <div class="surface">
+      <div class="rowlabel">Blitzwirkung <span style="font-weight:400;color:var(--sub)">(bei Bedarf ändern)</span></div>
       <div class="compgrid" role="group" aria-label="Blitzkorrektur">
         <button type="button" data-ev="-2" aria-pressed="false">–2 EV</button>
         <button type="button" data-ev="-1" aria-pressed="false">–1 EV</button>
@@ -75,55 +98,136 @@
     <p class="status" id="status">Guter Ausgangspunkt für direkten Blitz.</p>
   </section>
 
+  <section class="ambient" id="ambientBox" aria-label="Umgebungslicht und Belichtungswarnung" aria-live="polite">
+    <div class="ambient-head" id="ambientSource">Umgebungslicht · grobe Schätzung</div>
+    <p class="ambient-title" id="ambientTitle">Umgebungslicht prüfen</p>
+    <p class="ambient-copy" id="ambientDetail">Eine Wetterauswahl allein kann das Licht nicht genau messen.</p>
+    <div class="ambient-field">
+      <label for="metered">Optional: gemessene Blende bei 1/90 s</label>
+      <select id="metered">
+        <option value="">Nicht gemessen – Situation schätzen</option>
+        <option value="1.4">f/1.4</option><option value="2">f/2</option>
+        <option value="2.8">f/2.8</option><option value="4">f/4</option>
+        <option value="5.6">f/5.6</option><option value="8">f/8</option>
+        <option value="11">f/11</option><option value="16">f/16</option>
+        <option value="22">f/22</option><option value="32">f/32</option>
+        <option value="45">f/45</option><option value="64">f/64</option>
+      </select>
+      <p class="smallnote">Wenn du einen Belichtungsmesser hast: Welche Blende würde er bei deiner Film-ISO und 1/90 s ohne Blitz empfehlen? Bei Gegenlicht auf den hellen Hintergrund messen.</p>
+    </div>
+  </section>
+
   <div class="line" aria-hidden="true"></div>
   <section aria-label="Hinweise">
     <div class="formula"><span>Canon New F-1</span><strong>Verschlusszeit: 1/90 s</strong><span>Berechnung</span><strong>Leitzahl 15 bei ISO 100</strong><span>Blitzrichtung</span><strong>Direkt auf das Motiv</strong></div>
-    <p class="note">Schätzwerte für direkte Blitzaufnahmen. Reflektierende Wände, Gegenlicht, Diffusoren und vorhandenes Licht verändern das Ergebnis. Bei sehr hellem Umgebungslicht erst die Tageslichtbelichtung berücksichtigen.</p>
+    <p class="note">Schätzwerte für direkte Blitzaufnahmen. Reflektierende Wände, Gegenlicht, Diffusoren und vorhandenes Licht verändern das Ergebnis. Wetterangaben sind keine Lichtmessung. Bei Tageslicht zuerst die Belichtung ohne Blitz prüfen; der Blitz kann eine Überbelichtung durch Sonne nicht beheben.</p>
   </section>
-  <footer>Fernandez Studio · Privater Blitz-Spickzettel. Kein Belichtungsmesser. Offline nutzbar, wenn als Web-App installiert und einmal geladen.</footer>
+  <footer>Fernandez Studio · Blitzrechner v2 · Privater Blitz-Spickzettel. Kein Belichtungsmesser. Offline nutzbar, wenn als Web-App installiert und einmal geladen.</footer>
 </main>
 <script>
 (function(){
   'use strict';
-  const iso=document.querySelector('#iso'), ap=document.querySelector('#aperture'), dist=document.querySelector('#distance');
-  const distValue=document.querySelector('#distanceValue'), power=document.querySelector('#power'), summary=document.querySelector('#summary'), status=document.querySelector('#status');
+  // iM30: guide number ≈ 15 m at ISO 100, full power.
+  // Weather EV values are illustrative, never a substitute for metering.
+  const $=selector=>document.querySelector(selector);
+  const iso=$('#iso'), ap=$('#aperture'), dist=$('#distance'), scene=$('#scene'), metered=$('#metered');
+  const distValue=$('#distanceValue'), power=$('#power'), summary=$('#summary'), status=$('#status');
+  const ambientBox=$('#ambientBox'), ambientSource=$('#ambientSource'), ambientTitle=$('#ambientTitle'), ambientDetail=$('#ambientDetail');
+  const sceneHelp=$('#sceneHelp'), evHelp=$('#evHelp');
   const buttons=[...document.querySelectorAll('[data-ev]')];
   const labels=['1/64','1/32','1/16','1/8','1/4','1/2','1/1'];
   const fractions=[1/64,1/32,1/16,1/8,1/4,1/2,1];
+  const scenarios={
+    night:{ev100:5,flashEv:0,description:'Blitz als Hauptlicht. Der Hintergrund kann dunkel bis schwarz werden.'},
+    indoor:{ev100:7,flashEv:0,description:'Zimmerlicht kann stark schwanken. Der Blitz übernimmt meist die Beleuchtung.'},
+    cloudy:{ev100:12,flashEv:-1,description:'Blitz zum Aufhellen der Schatten. Auch bewölktes Tageslicht kann bei 1/90 s sehr hell sein.'},
+    sunny:{ev100:15,flashEv:-2,description:'Schwacher Aufhellblitz. In direkter Sonne musst du zuerst die Tageslichtbelichtung richtig einstellen.'},
+    backlit:{ev100:15,flashEv:-1,description:'Blitz für das schattige Gesicht, Belichtung für den hellen Hintergrund. Licht mit Kamera messen.'}
+  };
   let ev=0;
-  const fmt=v=>v.toFixed(1).replace('.',',');
+  const fmt=v=>Number(v).toFixed(1).replace('.',',');
+  const fmtAperture=v=>v>=30?'f/'+Math.round(v):'f/'+fmt(v);
   const getSaved=()=>{try{return JSON.parse(localStorage.getItem('iM30-settings')||'null')}catch{return null}};
-  const save=()=>{try{localStorage.setItem('iM30-settings',JSON.stringify({iso:iso.value,ap:ap.value,distance:dist.value,ev}))}catch{}};
+  const save=()=>{try{localStorage.setItem('iM30-settings',JSON.stringify({iso:iso.value,ap:ap.value,distance:dist.value,ev,scene:scene.value,metered:metered.value}))}catch{}};
   const prev=getSaved();
-  if(prev){if([...iso.options].some(o=>o.value===prev.iso))iso.value=prev.iso;if([...ap.options].some(o=>o.value===prev.ap))ap.value=prev.ap;if(Number(prev.distance)>=.5&&Number(prev.distance)<=8)dist.value=prev.distance;if([-2,-1,0,1].includes(prev.ev))ev=prev.ev}
+  if(prev){
+    if([...iso.options].some(o=>o.value===prev.iso))iso.value=prev.iso;
+    if([...ap.options].some(o=>o.value===prev.ap))ap.value=prev.ap;
+    if(Number(prev.distance)>=.5&&Number(prev.distance)<=8)dist.value=prev.distance;
+    if(prev.scene && scenarios[prev.scene])scene.value=prev.scene;
+    if([-2,-1,0,1].includes(prev.ev))ev=prev.ev;
+    else ev=scenarios[scene.value].flashEv;
+    if([...metered.options].some(o=>o.value===prev.metered))metered.value=prev.metered;
+  }else{ ev=scenarios[scene.value].flashEv; }
   function calculate(){
     const ISO=Number(iso.value), aperture=Number(ap.value), d=Number(dist.value);
-    // GN = aperture * distance at full power. Exposure proportional to power.
+    const setting=scenarios[scene.value];
     const required=Math.pow(aperture*d/(15*Math.sqrt(ISO/100)),2)*Math.pow(2,ev);
     let closestIndex=0, closestDiff=Infinity;
     for(let i=0;i<fractions.length;i++){
       const diff=Math.abs(Math.log2(fractions[i]/required));
       if(diff<closestDiff){closestDiff=diff;closestIndex=i}
     }
-    const selected=fractions[closestIndex], deviation=Math.log2(selected/required);
-    distValue.textContent=fmt(d)+' m';power.textContent=labels[closestIndex];
+    const deviation=Math.log2(fractions[closestIndex]/required);
+    distValue.textContent=fmt(d)+' m';
+    power.textContent=labels[closestIndex];
     summary.textContent='ISO '+ISO+' · f/'+ap.value+' · '+fmt(d)+' m';
+    sceneHelp.textContent=setting.description;
     buttons.forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.ev)===ev)));
-    if(required<fractions[0]){
-      status.textContent='Achtung: Selbst 1/64 ist hier zu stark. Blende weiter schliessen oder Abstand vergrössern.';
-    }else if(required>1){
-      status.textContent='Achtung: Auch volle Leistung reicht vermutlich nicht. Blende öffnen oder näher ans Motiv.';
-    }else if(Math.abs(deviation)>.35){
-      status.textContent=(deviation>0?'Etwas heller':'Etwas dunkler')+' als berechnet (rund '+fmt(Math.abs(deviation))+' Lichtwertstufen).';
+    evHelp.textContent=(ev===0?'Blitz als Hauptlicht.':'Aufhellblitz mit '+ev+' EV im Vergleich zur vollen Blitzbelichtung.')+' Die Korrektur kannst du unabhängig von der Situation ändern.';
+
+    const baseStatus=required<fractions[0]
+      ? 'Achtung: Selbst 1/64 ist hier zu stark. Blende schliessen oder mehr Abstand.'
+      : required>1
+        ? 'Achtung: Auch 1/1 reicht wahrscheinlich nicht. Blende öffnen oder näher ans Motiv.'
+        : Math.abs(deviation)>.35
+          ? (deviation>0?'Etwas heller':'Etwas dunkler')+' als berechnet (ca. '+fmt(Math.abs(deviation))+' EV).'
+          : 'Richtwert für direkten Blitz ohne Diffusor.';
+    status.textContent=baseStatus;
+
+    // Actual scene EV100: EV100 = log2(f^2 / t * 100/ISO).
+    // Positive difference means ambient alone is overexposed at chosen settings.
+    const hasMeter=Boolean(metered.value);
+    const ambientDifference=hasMeter
+      ? 2*Math.log2(Number(metered.value)/aperture)
+      : setting.ev100-Math.log2(aperture*aperture*90*100/ISO);
+    const naturalAperture=hasMeter
+      ? Number(metered.value)
+      : Math.sqrt(Math.pow(2,setting.ev100)/90*ISO/100);
+    ambientSource.textContent=hasMeter?'Umgebungslicht · nach Messwert':'Umgebungslicht · nur Wetter-Schätzung';
+    ambientBox.classList.toggle('warning',ambientDifference>0.5);
+    ambientBox.classList.toggle('good',ambientDifference<=0.5);
+    const rough=hasMeter?'':'Ungefähr: ';
+    if(ambientDifference>1){
+      ambientTitle.textContent='⚠️ Tageslicht vermutlich zu hell';
+      ambientDetail.textContent=rough+'Ohne Blitz ca. '+fmt(ambientDifference)+' EV überbelichtet. Bei ISO '+ISO+' und 1/90 s wäre etwa '+fmtAperture(naturalAperture)+' nötig. Reduziere erst das Umgebungslicht (Blende schliessen, Schatten, ggf. ND-Filter). Blitz schwächer stellen behebt das nicht.';
+    }else if(ambientDifference>0.5){
+      ambientTitle.textContent='⚠️ Umgebungslicht etwas zu hell';
+      ambientDetail.textContent=rough+'Schon ohne Blitz ca. '+fmt(ambientDifference)+' EV zu hell. Für korrektes Umgebungslicht etwa '+fmtAperture(naturalAperture)+' einstellen. Dann Blitzleistung neu berechnen.';
+    }else if(ambientDifference>=-1){
+      ambientTitle.textContent='✓ Umgebungslicht ungefähr passend';
+      ambientDetail.textContent=rough+'Belichtung des Umgebungslichts liegt in der Nähe des Sollwerts ('+(ambientDifference>=0?'+':'')+fmt(ambientDifference)+' EV). Der Blitz hellt zusätzlich auf – Gesicht und Hintergrund separat beurteilen.';
     }else{
-      status.textContent='Guter Ausgangspunkt für direkten Blitz.';
+      ambientTitle.textContent='✓ Blitz als zusätzliches Licht sinnvoll';
+      ambientDetail.textContent=rough+'Umgebungslicht liegt ca. '+fmt(Math.abs(ambientDifference))+' EV unter der eingestellten Belichtung. Das Motiv wird stärker vom Blitz bestimmt; der Hintergrund kann dunkel erscheinen.';
+    }
+    if(!hasMeter){
+      ambientDetail.textContent+=' Kein exakter Messwert: Wetter, Schatten und Tageszeit verändern das Licht stark.';
     }
     save();
   }
-  [iso,ap,dist].forEach(el=>el.addEventListener('input',calculate));
+  [iso,ap,dist,metered].forEach(el=>el.addEventListener('input',calculate));
+  scene.addEventListener('change',()=>{
+    ev=scenarios[scene.value].flashEv;
+    // A meter reading belongs to the previous light situation.
+    metered.value='';
+    calculate();
+  });
   buttons.forEach(el=>el.addEventListener('click',()=>{ev=Number(el.dataset.ev);calculate()}));
   calculate();
-  if('serviceWorker' in navigator && location.protocol==='https:') navigator.serviceWorker.register('./sw.js').catch(()=>{});
+  if('serviceWorker' in navigator && location.protocol==='https:'){
+    navigator.serviceWorker.register('./sw.js').catch(()=>{});
+  }
 })();
 </script>
 </body>
